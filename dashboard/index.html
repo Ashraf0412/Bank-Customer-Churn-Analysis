@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bank Customer Churn Admin Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+  <script src="dashboard_data.js" defer></script>
+  <script src="dashboard.js" defer></script>
+</head>
+<body>
+  <div class="dashboard-shell">
+    <aside class="sidebar">
+      <div class="brand-block">
+        <div class="brand-mark"></div>
+        <div>
+          <p class="brand-label">Bank Analytics</p>
+          <h1>Churn Insights</h1>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <button class="nav-link active" data-page="dashboard">Dashboard</button>
+        <button class="nav-link" data-page="customer-overview">Customer Overview</button>
+        <button class="nav-link" data-page="churn-analysis">Churn Analysis</button>
+        <button class="nav-link" data-page="risk-insights">Risk Insights</button>
+        <button class="nav-link" data-page="customer-segments">Customer Segments</button>
+        <button class="nav-link" data-page="reports">Reports</button>
+        <button class="nav-link" data-page="about-project">About Project</button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <p>Built with Python | SQL | Power BI</p>
+      </div>
+    </aside>
+
+    <main class="dashboard-main">
+      <section class="page page-dashboard active" data-page="dashboard">
+        <section class="dashboard-header">
+        <div>
+          <p class="eyebrow">Bank Customer Churn Analysis Dashboard</p>
+          <h2>Customer Retention & Risk Monitoring System</h2>
+        </div>
+        <div class="header-cards">
+          <div class="small-card">
+            <p>Last Updated</p>
+            <strong>30 Jul 2026 10:30 AM</strong>
+          </div>
+          <div class="small-card">
+            <p>Data Source</p>
+            <strong>Bank Customer Dataset</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="filters-row">
+        <div class="filter-card wide">
+          <label for="filter-geography">Geography</label>
+          <select id="filter-geography"><option value="All">All</option></select>
+        </div>
+        <div class="filter-card wide">
+          <label for="filter-gender">Gender</label>
+          <select id="filter-gender"><option value="All">All</option></select>
+        </div>
+        <div class="filter-card wide">
+          <label for="filter-age-group">Age Group</label>
+          <select id="filter-age-group"><option value="All">All</option></select>
+        </div>
+        <div class="filter-card wide">
+          <label for="filter-products">Num of Products</label>
+          <select id="filter-products"><option value="All">All</option></select>
+        </div>
+        <div class="filter-card wide">
+          <label for="filter-active">Active Member</label>
+          <select id="filter-active"><option value="All">All</option></select>
+        </div>
+        <button class="reset-button">Reset Filters</button>
+      </section>
+
+      <section class="kpi-grid" id="kpi-cards"></section>
+
+      <section class="charts-grid">
+        <div class="chart-card">
+          <div class="card-title">Churn by Geography</div>
+          <canvas id="geoChart"></canvas>
+        </div>
+        <div class="chart-card">
+          <div class="card-title">Churn by Gender</div>
+          <canvas id="genderChart"></canvas>
+        </div>
+        <div class="chart-card">
+          <div class="card-title">Churn by Age Group</div>
+          <canvas id="ageGroupChart"></canvas>
+        </div>
+        <div class="chart-card">
+          <div class="card-title">Churn by Number of Products</div>
+          <canvas id="productChart"></canvas>
+        </div>
+        <div class="chart-card">
+          <div class="card-title">Active Member vs Churn</div>
+          <canvas id="activeChart"></canvas>
+        </div>
+        <div class="insights-card">
+          <div class="card-title">Key Insights</div>
+          <ul>
+            <li>Germany has the highest churn rate followed by France and Spain.</li>
+            <li>Customers aged 51+ are the most likely to churn.</li>
+            <li>Inactive customers churn at over twice the rate of active members.</li>
+            <li>Single-product customers show the greatest churn risk.</li>
+            <li>Higher credit scores correlate with lower churn.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="bottom-grid">
+        <div class="table-card">
+          <div class="table-header">
+            <h3>Top 10 High Risk Customers</h3>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Customer ID</th>
+                <th>Geography</th>
+                <th>Gender</th>
+                <th>Age</th>
+                <th>Balance</th>
+                <th>Salary</th>
+                <th>Risk Level</th>
+              </tr>
+            </thead>
+            <tbody id="customer-table"></tbody>
+          </table>
+        </div>
+      </section>
+    </section>
+
+    <section class="page page-hidden" data-page="customer-overview">
+      <div class="page-title-block">
+        <h2>Customer Overview</h2>
+        <p>Explore customer demographics, account activity, and retention performance.</p>
+      </div>
+      <div class="page-placeholder">Customer overview content can be added here for segmented analytics.</div>
+    </section>
+
+    <section class="page page-hidden" data-page="churn-analysis">
+      <div class="page-title-block">
+        <h2>Churn Analysis</h2>
+        <p>Deep dive into churn drivers and churned customer segments.</p>
+      </div>
+      <div class="page-placeholder">Churn analysis page content will appear here.</div>
+    </section>
+
+    <section class="page page-hidden" data-page="risk-insights">
+      <div class="page-title-block">
+        <h2>Risk Insights</h2>
+        <p>Review risk-level patterns and early warning signals across customers.</p>
+      </div>
+      <div class="page-placeholder">Risk insights dashboard content is under development.</div>
+    </section>
+
+    <section class="page page-hidden" data-page="customer-segments">
+      <div class="page-title-block">
+        <h2>Customer Segments</h2>
+        <p>Segment customers by behavior, churn propensity, and product use.</p>
+      </div>
+      <div class="page-placeholder">Segment-level views will be added here.</div>
+    </section>
+
+    <section class="page page-hidden" data-page="reports">
+      <div class="page-title-block">
+        <h2>Reports</h2>
+        <p>Access generated reports and download summaries for stakeholders.</p>
+      </div>
+      <div class="report-card">
+        <p>Download a PDF summary of the current dashboard view, including charts, KPIs, and table data.</p>
+        <button id="download-report" class="download-button">Download Report</button>
+      </div>
+    </section>
+
+    <section class="page page-hidden" data-page="about-project">
+      <div class="page-title-block">
+        <h2>About Project</h2>
+        <p>Learn more about the churn analysis project goals and methodology.</p>
+      </div>
+      <div class="page-placeholder">About the project content will be shown here.</div>
+    </section>
+  </main>
+  </div>
+</body>
+</html>
