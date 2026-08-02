@@ -14,6 +14,7 @@ def main() -> None:
         for row in reader:
             rows.append({
                 'customer_id': int(row['customer_id']),
+                'customer_name': row['customer_name'].strip(),
                 'credit_score': int(row['credit_score']),
                 'geography': row['geography'].strip().title(),
                 'gender': row['gender'].strip().title(),

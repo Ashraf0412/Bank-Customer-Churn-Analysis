@@ -14,7 +14,6 @@
   <div class="dashboard-shell">
     <aside class="sidebar">
       <div class="brand-block">
-        <div class="brand-mark"></div>
         <div>
           <p class="brand-label">Bank Analytics</p>
           <h1>Churn Insights</h1>
@@ -23,17 +22,12 @@
 
       <nav class="sidebar-nav">
         <button class="nav-link active" data-page="dashboard">Dashboard</button>
-        <button class="nav-link" data-page="customer-overview">Customer Overview</button>
-        <button class="nav-link" data-page="churn-analysis">Churn Analysis</button>
+        <button class="nav-link" data-page="customer-records">Customer Records</button>
         <button class="nav-link" data-page="risk-insights">Risk Insights</button>
-        <button class="nav-link" data-page="customer-segments">Customer Segments</button>
         <button class="nav-link" data-page="reports">Reports</button>
         <button class="nav-link" data-page="about-project">About Project</button>
       </nav>
 
-      <div class="sidebar-footer">
-        <p>Built with Python | SQL | Power BI</p>
-      </div>
     </aside>
 
     <main class="dashboard-main">
@@ -42,16 +36,6 @@
         <div>
           <p class="eyebrow">Bank Customer Churn Analysis Dashboard</p>
           <h2>Customer Retention & Risk Monitoring System</h2>
-        </div>
-        <div class="header-cards">
-          <div class="small-card">
-            <p>Last Updated</p>
-            <strong>30 Jul 2026 10:30 AM</strong>
-          </div>
-          <div class="small-card">
-            <p>Data Source</p>
-            <strong>Bank Customer Dataset</strong>
-          </div>
         </div>
       </section>
 
@@ -100,16 +84,12 @@
         </div>
         <div class="chart-card">
           <div class="card-title">Active Member vs Churn</div>
-          <canvas id="activeChart"></canvas>
+          <canvas id="activeChart" class="chart-circle"></canvas>
         </div>
         <div class="insights-card">
           <div class="card-title">Key Insights</div>
-          <ul>
-            <li>Germany has the highest churn rate followed by France and Spain.</li>
-            <li>Customers aged 51+ are the most likely to churn.</li>
-            <li>Inactive customers churn at over twice the rate of active members.</li>
-            <li>Single-product customers show the greatest churn risk.</li>
-            <li>Higher credit scores correlate with lower churn.</li>
+          <ul id="insights-list">
+            <li>Loading insights...</li>
           </ul>
         </div>
       </section>
@@ -117,7 +97,7 @@
       <section class="bottom-grid">
         <div class="table-card">
           <div class="table-header">
-            <h3>Top 10 High Risk Customers</h3>
+            <h3>Recently Churned Customers</h3>
           </div>
           <table>
             <thead>
@@ -137,20 +117,83 @@
       </section>
     </section>
 
-    <section class="page page-hidden" data-page="customer-overview">
-      <div class="page-title-block">
-        <h2>Customer Overview</h2>
-        <p>Explore customer demographics, account activity, and retention performance.</p>
+    <section class="page page-hidden" data-page="customer-records">
+      <div class="page-title-block records-page-title">
+        <div>
+          <h2>Customer Records</h2>
+          <p>View and explore all customer data</p>
+        </div>
+        <div class="records-page-actions">
+          <button id="records-filter-toggle" class="secondary-button">Filters</button>
+        </div>
       </div>
-      <div class="page-placeholder">Customer overview content can be added here for segmented analytics.</div>
-    </section>
 
-    <section class="page page-hidden" data-page="churn-analysis">
-      <div class="page-title-block">
-        <h2>Churn Analysis</h2>
-        <p>Deep dive into churn drivers and churned customer segments.</p>
+      <div class="records-status-bar">
+        <span class="status-pill"><i class="status-icon">i</i> <span id="records-summary">Showing all customer records</span></span>
       </div>
-      <div class="page-placeholder">Churn analysis page content will appear here.</div>
+
+      <div class="records-panel">
+        <div class="records-search-block">
+          <input id="record-search-input" type="text" placeholder="Search by Customer ID or Name..." />
+          <button id="record-search-button" class="primary-button search-button">Search</button>
+        </div>
+
+        <div class="records-filter-panel" id="records-filter-panel">
+          <div class="filter-panel-title">
+            <h3>Show Records (Filters)</h3>
+          </div>
+          <div class="records-filter-grid">
+            <div class="filter-field">
+              <label for="records-filter-geography">Geography</label>
+              <select id="records-filter-geography"><option value="All">All</option></select>
+            </div>
+            <div class="filter-field">
+              <label for="records-filter-gender">Gender</label>
+              <select id="records-filter-gender"><option value="All">All</option></select>
+            </div>
+            <div class="filter-field">
+              <label for="records-filter-age-group">Age Group</label>
+              <select id="records-filter-age-group"><option value="All">All</option></select>
+            </div>
+            <div class="filter-field">
+              <label for="records-filter-credit-card">Has Credit Card</label>
+              <select id="records-filter-credit-card"><option value="All">All</option><option value="Yes">Yes</option><option value="No">No</option></select>
+            </div>
+            <div class="filter-field">
+              <label for="records-filter-active">Active Member</label>
+              <select id="records-filter-active"><option value="All">All</option></select>
+            </div>
+            <div class="filter-field">
+              <label for="records-filter-churned">Churned Status</label>
+              <select id="records-filter-churned"><option value="All">All</option></select>
+            </div>
+          </div>
+          <div class="filter-panel-actions">
+            <button id="records-reset-button" class="secondary-button">Reset Filters</button>
+            <button id="records-apply-button" class="primary-button">Apply Filters</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-card customer-records-card full-width-card">
+        <div class="table-wrapper records-table-wrapper">
+          <table id="customer-records-table">
+            <thead>
+              <tr>
+                <th>Customer ID</th>
+                <th>Name</th>
+                <th>Geography</th>
+                <th>Gender</th>
+                <th>Age</th>
+                <th>Balance</th>
+                <th>Salary</th>
+                <th>Churned</th>
+              </tr>
+            </thead>
+            <tbody id="customer-records-table-body"></tbody>
+          </table>
+        </div>
+      </div>
     </section>
 
     <section class="page page-hidden" data-page="risk-insights">
@@ -158,15 +201,85 @@
         <h2>Risk Insights</h2>
         <p>Review risk-level patterns and early warning signals across customers.</p>
       </div>
-      <div class="page-placeholder">Risk insights dashboard content is under development.</div>
-    </section>
 
-    <section class="page page-hidden" data-page="customer-segments">
-      <div class="page-title-block">
-        <h2>Customer Segments</h2>
-        <p>Segment customers by behavior, churn propensity, and product use.</p>
-      </div>
-      <div class="page-placeholder">Segment-level views will be added here.</div>
+      <section class="filters-row">
+        <div class="filter-card wide">
+          <label for="risk-filter-geography">Geography</label>
+          <select id="risk-filter-geography"><option value="All">All</option></select>
+        </div>
+        <div class="filter-card wide">
+          <label for="risk-filter-gender">Gender</label>
+          <select id="risk-filter-gender"><option value="All">All</option></select>
+        </div>
+        <div class="filter-card wide">
+          <label for="risk-filter-age-group">Age Group</label>
+          <select id="risk-filter-age-group"><option value="All">All</option></select>
+        </div>
+        <div class="filter-card wide">
+          <label for="risk-filter-products">Num of Products</label>
+          <select id="risk-filter-products"><option value="All">All</option></select>
+        </div>
+        <div class="filter-card wide">
+          <label for="risk-filter-active">Active Member</label>
+          <select id="risk-filter-active"><option value="All">All</option></select>
+        </div>
+        <button id="risk-reset-button" class="reset-button">Reset Filters</button>
+      </section>
+
+      <section class="kpi-grid" id="risk-kpi-cards"></section>
+
+      <section class="alerts-grid" id="risk-alerts"></section>
+
+      <section class="charts-grid">
+        <div class="chart-card">
+          <div class="card-title">Risk Level Distribution</div>
+          <canvas id="riskDistributionChart" class="chart-circle"></canvas>
+        </div>
+        <div class="chart-card">
+          <div class="card-title">Top Risk Factors</div>
+          <canvas id="riskFactorsChart"></canvas>
+        </div>
+        <div class="chart-card">
+          <div class="card-title">Risk by Number of Products</div>
+          <canvas id="riskProductChart"></canvas>
+        </div>
+      </section>
+
+      <section class="charts-grid two-column">
+        <div class="chart-card">
+          <div class="card-title">Risk by Geography</div>
+          <canvas id="riskGeoChart"></canvas>
+        </div>
+        <div class="chart-card">
+          <div class="card-title">Risk by Age Group</div>
+          <canvas id="riskAgeChart"></canvas>
+        </div>
+      </section>
+
+      <section class="bottom-grid">
+        <div class="table-card">
+          <div class="table-header">
+            <h3>Top Customers at Risk of Churn</h3>
+          </div>
+          <table id="risk-table">
+            <thead>
+              <tr>
+                <th data-sort="customer_id">Customer ID</th>
+                <th data-sort="geography">Geography</th>
+                <th data-sort="age">Age</th>
+                <th data-sort="credit_score">Credit Score</th>
+                <th data-sort="balance">Balance</th>
+                <th data-sort="num_of_products">Number of Products</th>
+                <th data-sort="is_active_member">Active Member</th>
+                <th data-sort="risk_score">Risk Score</th>
+                <th data-sort="risk_level">Risk Level</th>
+                <th data-sort="churned">Churned</th>
+              </tr>
+            </thead>
+            <tbody id="risk-table-body"></tbody>
+          </table>
+        </div>
+      </section>
     </section>
 
     <section class="page page-hidden" data-page="reports">
@@ -176,16 +289,18 @@
       </div>
       <div class="report-card">
         <p>Download a PDF summary of the current dashboard view, including charts, KPIs, and table data.</p>
-        <button id="download-report" class="download-button">Download Report</button>
+        <button id="download-report" class="download-button">Download Dashboard - Pdf</button>
+        <button id="download-risk-report" class="download-button secondary">Download Risk Insight - Pdf</button>
       </div>
     </section>
 
     <section class="page page-hidden" data-page="about-project">
       <div class="page-title-block">
         <h2>About Project</h2>
-        <p>Learn more about the churn analysis project goals and methodology.</p>
       </div>
-      <div class="page-placeholder">About the project content will be shown here.</div>
+      <div class="page-placeholder">
+        Bank Customer Churn Insights - is an interactive analytics dashboard designed to help banks monitor customer behavior, identify churn patterns, and support data-driven retention strategies. Built using -Python, SQL, and Power BI-inspired visualizations, the system analyzes customer demographics, credit scores, account balances, product usage, and activity status to uncover key trends. It also includes a rule-based Risk Insights - module that prioritizes customers based on multiple risk factors, enabling early intervention and informed business decisions through dynamic, data-driven visualizations.
+      </div>
     </section>
   </main>
   </div>
