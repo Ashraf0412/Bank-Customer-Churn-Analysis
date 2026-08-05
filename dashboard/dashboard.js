@@ -494,7 +494,6 @@ function renderRiskAlerts(data) {
     <div class="alert-card"><h4>Credit Score below Mean</h4><p>${lowCreditCount}</p></div>
     <div class="alert-card"><h4>Inactive Customers</h4><p>${inactiveCount}</p></div>
     <div class="alert-card"><h4>Balance above Mean</h4><p>${highBalanceCount}</p></div>
-    <div class="alert-card"><h4>High Risk Customers</h4><p>${highRiskCount}</p></div>
   `;
 }
 
